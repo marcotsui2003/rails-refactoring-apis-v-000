@@ -21,8 +21,8 @@ describe 'GithubService' do
 
     it "sends the correct POST request" do
       expect(WebMock).to have_requested(:post, "https://github.com/login/oauth/access_token").
-        with(:body => {"client_id"=> ENV["GITHUB_CLIENT"], "client_secret"=> ENV["GITHUB_SECRET"], "code"=>"20"},
-        :headers => {'Accept'=>'application/json'})
+      with(:body => {"client_id"=>"", "client_secret"=>"", "code"=>"20"},
+      :headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.1'})
     end
 
     it "sets @access_token for a GithubService" do
@@ -67,7 +67,7 @@ describe 'GithubService' do
   describe '#create_repo' do
     it "sends the correct POST request" do
       stubbed = stub_request(:post, "https://api.github.com/user/repos").
-        with(body: {"{\"name\":\"a-new-repo\"}"=>nil}, headers: {'Authorization'=>'token 1'})
+        with(body: '{"name":"a-new-repo"}',headers: {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Authorization'=>'token 1', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.1'})
 
       service = GithubService.new({"access_token" => "1"})
       service.create_repo("a-new-repo")
